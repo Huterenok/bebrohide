@@ -2,8 +2,18 @@
 name = "bebrohide"
 version = "0.1.0"
 edition = "2021"
+license = "MIT OR Apache-2.0"
+description = "Simple CLI to hide file inside another one"
+readme = "README.md"
+repository = "https://github.com/Huterok228/bebrohide"
+keywords = ["bebra", "hide", "bebrohide", "file", "cli"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[[bin]]
+name = "bebrohide"
+path = "src/main.rs"
+doc = false
 
 [dependencies]
 aes-gcm = "0.10.2"

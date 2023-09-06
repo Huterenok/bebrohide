@@ -1,5 +1,5 @@
 //cargo run reveal -r assets/bebra4.txt -d assets2
-//cargo run reveal -r assets/bebra5.txt -d assets2 -c
+//cargo run reveal -r assets/test.exe -d assets2 -c
 use std::error::Error;
 
 use clap::ArgMatches;

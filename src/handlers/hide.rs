@@ -1,5 +1,6 @@
-// cargo run hide -s assets/bebra1.txt -r assets/bebra2.txt -i assets/bebra5.txt
-// cargo run hide -s assets/bebra1.txt -r assets/bebra2.txt
+// cargo run hide -s assets/bebra1.txt -r assets/temp.exe -i assets/bebra5.txt
+// cargo run hide -s assets/temp.exe -r assets/bebra.txt -i assets/test.exe
+// cargo run hide -s assets/temp.exe -r assets/bebra.txt
 use clap::ArgMatches;
 use std::error::Error;
 
