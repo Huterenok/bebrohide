@@ -5,7 +5,7 @@ Bebrohide CLI is a tool that allows you to hide encoded file inside another one.
 ## Installation
 
 ```shell
-cargo install bebrohide_cli
+cargo install bebrohide
 ```
 
 ## Getting Started
