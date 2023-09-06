@@ -1,11 +1,11 @@
 # Bebrohide CLI
 
-Bebrohide CLI is a tool that allows you to hide encoded file inside another one. If you want to reveal your hidden file, you can do it by typing your password for encoding/decoding.
+Bebrohide CLI is a tool that allows you to hide encoded file inside another one.
 
 ## Installation
 
 ```shell
-cargo install bebrohide_cli
+cargo install bebrohide
 ```
 
 ## Getting Started
@@ -50,7 +50,7 @@ or
 bebrohide hide -s ./banan.exe -r ./bebra.txt -i ./mega_bebra.exe
 ```
 
-Now you have file in your folder named 'mega_bebra.exe' and it can still be executed.
+Then you enter your password for encoding/decoding data and that's all. Now you have file in your folder named 'mega_bebra.exe' with hidden one and this file can be executed as 'banan.exe'.
 
 ## `bebrohide check`
 
@@ -94,4 +94,4 @@ or
 bebrohide reveal -r ./mega_bebra.exe -d ./assets -c
 ```
 
-And now you have your decoded file 'bebra.txt' inside 'assets' folder. If you use '--clear' parameter, file 'mega_bebra.exe' will be cleared of hidden one.
+Then you enter your password for encoding/decoding data and that's all. Now you have your decoded file 'bebra.txt' inside 'assets' folder. If you used '--clear' parameter, file 'mega_bebra.exe' would be cleared of hidden one.
