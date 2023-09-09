@@ -1,7 +1,6 @@
 //cargo run reveal -r assets/bebra4.txt -d assets2
 //cargo run reveal -r assets/test.exe -d assets2 -c
-use std::error::Error;
-
+use anyhow::{bail, Result};
 use clap::ArgMatches;
 
 use crate::mask::{HiddenMask, VisibleMask, VISIBLE_MASK_SIZE};
@@ -19,18 +18,18 @@ struct RevealArgs {
     clear: bool,
 }
 
-pub fn run_reveal_command(matches: &ArgMatches) -> Result<(), Box<dyn Error>> {
+pub fn run_reveal_command(matches: &ArgMatches) -> Result<()> {
     let args: RevealArgs = matches.clone().into();
 
     let data: &[u8] = &read_file(&args.hidden)?;
     let before_visible_length = match data.len().checked_sub(VISIBLE_MASK_SIZE) {
         Some(length) => length,
-        None => return Err("File doesn't contain hidden one".into()),
+        None => bail!("File doesn't contain hidden one"),
     };
     let visible_mask: VisibleMask = deserialize(&data[before_visible_length..])?;
     match visible_mask.verify() {
         true => (),
-        false => return Err("File doesn't contain hidden one".into()),
+        false => bail!("File doesn't contain hidden one"),
     };
 
     let pwd = read_password()?;
@@ -43,12 +42,9 @@ pub fn run_reveal_command(matches: &ArgMatches) -> Result<(), Box<dyn Error>> {
             ..data.len() - VISIBLE_MASK_SIZE],
     )?;
 
-    //TODO: -8
     let hidden_mask: HiddenMask =
-        deserialize(&decoded[decoded.len() - visible_mask.hidden_mask_length as usize - 8..])?;
-    //TODO: -8
-    let hidden_file: &[u8] =
-        &decoded[..decoded.len() - visible_mask.hidden_mask_length as usize - 8];
+        deserialize(&decoded[decoded.len() - visible_mask.hidden_mask_length as usize..])?;
+    let hidden_file: &[u8] = &decoded[..decoded.len() - visible_mask.hidden_mask_length as usize];
 
     let path = format!("{}/{}", args.destination, hidden_mask.name);
     write_to_file(&path, hidden_file)?;
@@ -56,7 +52,7 @@ pub fn run_reveal_command(matches: &ArgMatches) -> Result<(), Box<dyn Error>> {
     if args.clear {
         rewrite_file(
             &args.hidden,
-            //TODO: -8
+            //TODO: -16
             &data[..data.len() - decoded.len() - VISIBLE_MASK_SIZE - 16],
         )?;
     }

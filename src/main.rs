@@ -1,6 +1,6 @@
 mod cli;
-mod mask;
 mod handlers;
+mod mask;
 mod utils;
 
 use std::fmt::Display;
@@ -19,7 +19,7 @@ fn main() {
     }
 }
 
-fn handle_error<E: Display, T>(error: E) -> T{
+fn handle_error<E: Display, T>(error: E) -> T {
     eprintln!("{error}");
-    ::std::process::exit(1);
+    ::std::process::exit(0);
 }

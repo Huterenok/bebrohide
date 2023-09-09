@@ -1,13 +1,13 @@
 // cargo run hide -s assets/bebra1.txt -r assets/temp.exe -i assets/bebra5.txt
 // cargo run hide -s assets/temp.exe -r assets/bebra.txt -i assets/test.exe
 // cargo run hide -s assets/temp.exe -r assets/bebra.txt
+use anyhow::Result;
 use clap::ArgMatches;
-use std::error::Error;
 
 use crate::mask::{HiddenMask, VisibleMask};
 
 use crate::utils::codec::encode;
-use crate::utils::fs::{read_file, write_to_file, retrieve_filename};
+use crate::utils::fs::{read_file, retrieve_filename, write_to_file};
 use crate::utils::hash::hash;
 use crate::utils::io::read_password;
 use crate::utils::serialize::serialize;
@@ -19,7 +19,7 @@ struct HideArgs {
     inside: String,
 }
 
-pub fn run_hide_command(matches: &ArgMatches) -> Result<(), Box<dyn Error>> {
+pub fn run_hide_command(matches: &ArgMatches) -> Result<()> {
     let args: HideArgs = matches.clone().into();
 
     let hidden_file: &[u8] = &read_file(&args.hidden)?;
@@ -28,7 +28,7 @@ pub fn run_hide_command(matches: &ArgMatches) -> Result<(), Box<dyn Error>> {
     let pwd = read_password()?;
     let pwd_hash: &[u8] = &hash(pwd.as_bytes())?;
 
-		let	hidden_filename = retrieve_filename(&args.hidden)?;
+    let hidden_filename = retrieve_filename(&args.hidden)?;
     let hidden_mask = HiddenMask::new(hidden_filename);
     let hidden_data: &[u8] = &[hidden_file, &serialize(&hidden_mask)?].concat();
 
@@ -40,7 +40,6 @@ pub fn run_hide_command(matches: &ArgMatches) -> Result<(), Box<dyn Error>> {
         nonce,
     ))?;
 
-    //TODO
     if args.source == args.inside {
         let data: &[u8] = &[&encoded, visible_mask].concat();
         write_to_file(&args.inside, data)?;

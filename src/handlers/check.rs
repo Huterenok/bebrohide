@@ -1,6 +1,5 @@
 // cargo run check -r assets/bebra1.txt
-use std::error::Error;
-
+use anyhow::Result;
 use clap::ArgMatches;
 
 use crate::mask::{VisibleMask, VISIBLE_MASK_SIZE};
@@ -13,14 +12,14 @@ struct CheckArgs {
     hidden: String,
 }
 
-pub fn run_check_command(matches: &ArgMatches) -> Result<(), Box<dyn Error>> {
+pub fn run_check_command(matches: &ArgMatches) -> Result<()> {
     let args: CheckArgs = matches.clone().into();
 
     let data = read_file(&args.hidden)?;
     let before_mask_length = match data.len().checked_sub(VISIBLE_MASK_SIZE) {
         Some(length) => length,
         None => {
-            println!("{}", false);
+            println!("false");
             return Ok(());
         }
     };
@@ -28,7 +27,7 @@ pub fn run_check_command(matches: &ArgMatches) -> Result<(), Box<dyn Error>> {
     let visible_mask: VisibleMask = match deserialize(&data[before_mask_length..]) {
         Ok(mask) => mask,
         Err(_) => {
-            println!("{}", false);
+            println!("false");
             return Ok(());
         }
     };

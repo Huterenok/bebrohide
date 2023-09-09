@@ -5,17 +5,17 @@ pub const VISIBLE_MASK_SIZE: usize = 4 + NONCE_SIZE + std::mem::size_of::<u64>()
 pub const MAGIC_BYTES: [u8; 2] = [77, 77];
 
 #[derive(Serialize, Deserialize)]
-pub struct HiddenMask{
+pub struct HiddenMask {
     pub name: String,
 }
 
-impl HiddenMask{
+impl HiddenMask {
     pub fn new(name: String) -> Self {
         HiddenMask { name }
     }
 
     pub fn size(&self) -> u64 {
-        return self.name.len() as u64;
+        return self.name.len() as u64 + 8;
     }
 }
 
@@ -31,7 +31,7 @@ pub struct VisibleMask {
 
 impl VisibleMask {
     pub fn new(
-			encoded_hidden_length: u64,
+        encoded_hidden_length: u64,
         hidden_file_length: u64,
         hidden_mask_length: u64,
         nonce: [u8; 12],
